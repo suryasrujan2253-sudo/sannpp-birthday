@@ -6,10 +6,9 @@
 <style>
 body{
   margin:0;
-  /* Soft romantic gradient */
   background: linear-gradient(135deg, #ffe6f0 0%, #ffd9e8 50%, #ffcce0 100%);
   overflow:hidden;
-  color:#4d0033; /* soft dark pink text */
+  color:#4d0033;
   font-family:Arial, sans-serif;
   display:flex;
   justify-content:center;
@@ -40,18 +39,19 @@ button:hover{
   font-weight:bold;
   text-shadow:0 0 5px #ff99cc,0 0 10px #ff6699;
 }
-/* Hearts floating */
-.heart{
+/* Floating hearts */
+.heart, .bgheart{
   position:absolute;
   color:#ff6699;
   font-size:20px;
-  animation:float 6s linear infinite;
+  animation:float 8s linear infinite;
 }
 @keyframes float{
-  0%{transform:translateY(100vh);opacity:1;}
-  100%{transform:translateY(-10vh);opacity:0;}
+  0%{transform:translateY(100vh) scale(0.5); opacity:0.5;}
+  50%{opacity:0.7;}
+  100%{transform:translateY(-10vh) scale(1); opacity:0;}
 }
-/* Fireworks */
+/* Fireworks sparks */
 .spark{
   position:absolute;
   width:4px;
@@ -71,6 +71,29 @@ button:hover{
 
 <script>
 let textSpeed = 40;
+
+/* Background floating hearts */
+function createBgHearts(){
+  setInterval(()=>{
+    let heart=document.createElement("div");
+    heart.className="bgheart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(10+Math.random()*15)+"px";
+    heart.style.animationDuration=(6+Math.random()*6)+"s";
+    heart.style.opacity=0.3+Math.random()*0.4;
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),12000);
+  },500);
+}
+
+/* Typing effect */
+function typeEffect(element, text, i=0){
+  if(i<text.length){
+    element.innerHTML += text.charAt(i);
+    setTimeout(()=>typeEffect(element,text,i+1), textSpeed);
+  }
+}
 
 /* Floating hearts */
 function createHearts(){
@@ -108,43 +131,43 @@ function createFireworks(){
   }
 }
 
-/* Typing effect */
-function typeEffect(element, text, i=0){
-  if(i<text.length){
-    element.innerHTML += text.charAt(i);
-    setTimeout(()=>typeEffect(element,text,i+1), textSpeed);
-  }
-}
-
 /* Start Surprise */
 function start(){
   document.getElementById("bgmusic").play();
+  createBgHearts();
   let container=document.getElementById("container");
   container.innerHTML=`<h1 class="glow" id="typing"></h1>`;
   typeEffect(document.getElementById("typing"), "Happy Birthday My Beautiful Sannpp 🎂❤️");
-  setTimeout(page2,4000);
+  setTimeout(()=>page2(),1000); // show Next button quickly
 }
 
+/* Pages with manual tap */
 function page2(){
-  document.getElementById("container").innerHTML=`
+  let container=document.getElementById("container");
+  container.innerHTML=`
     <h2>You make me smile even on my worst days 😊</h2>
-    <p>You are my peace, my happiness, my everything 💕</p>`;
-  setTimeout(page3,4000);
+    <p>You are my peace, my happiness, my everything 💕</p>
+    <button onclick="page3()">Next 💗</button>`;
 }
 function page3(){
-  document.getElementById("container").innerHTML=`
+  let container=document.getElementById("container");
+  container.innerHTML=`
     <h2>Every moment with you feels magical ✨</h2>
-    <p>Being your first love is the greatest gift of my life 💖</p>`;
-  setTimeout(page4,4000);
+    <p>Being your first love is the greatest gift of my life 💖</p>
+    <button onclick="page4()">Next 💗</button>`;
 }
 function page4(){
-  document.getElementById("container").innerHTML=`
+  let container=document.getElementById("container");
+  container.innerHTML=`
     <h2>I promise to protect you, support you, and love you always 🤍</h2>
-    <p>No matter what life brings, I am yours ♾️</p>`;
-  setTimeout(final,4000);
+    <p>No matter what life brings, I am yours ♾️</p>
+    <button onclick="final()">Next 💗</button>`;
 }
+
+/* Final screen */
 function final(){
-  document.getElementById("container").innerHTML=`
+  let container=document.getElementById("container");
+  container.innerHTML=`
     <h1 class="glow">Happy Birthday Sannpp 🎂❤️</h1>
     <h2 class="glow">I Love You So Much 💖</h2>
     <p>You make my life beautiful every single day 🌸</p>
