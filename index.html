@@ -3,11 +3,11 @@
 <head>
 <title>Happy Birthday Sannpp ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{
   margin:0;
-  background:#0f0f1a;
+  background: radial-gradient(ellipse at bottom, #0f0f1a 0%, #1a1a2e 100%);
+  overflow:hidden;
   color:white;
   font-family:Arial, sans-serif;
   display:flex;
@@ -15,12 +15,27 @@ body{
   align-items:center;
   height:100vh;
   text-align:center;
-  overflow:hidden;
 }
+
+/* Stars */
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  animation:twinkle 3s infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:0.2;}
+  50%{opacity:1;}
+}
+
 .container{
   z-index:2;
   padding:20px;
 }
+
 button{
   margin:10px;
   padding:12px 25px;
@@ -35,13 +50,14 @@ button{
 button:hover{
   transform:scale(1.05);
 }
+
 .glow{
   font-size:28px;
   font-weight:bold;
   text-shadow:0 0 10px pink,0 0 20px red,0 0 30px purple;
 }
 
-/* Floating hearts */
+/* Hearts */
 .heart{
   position:absolute;
   color:#ff4e8a;
@@ -53,18 +69,13 @@ button:hover{
   100%{transform:translateY(-10vh);opacity:0;}
 }
 
-/* Fireworks */
-.firework{
+/* Fireworks sparks */
+.spark{
   position:absolute;
-  width:6px;
-  height:6px;
-  background:yellow;
+  width:4px;
+  height:4px;
   border-radius:50%;
-  animation:explode 1.2s ease-out forwards;
-}
-@keyframes explode{
-  0%{transform:scale(1);opacity:1;}
-  100%{transform:scale(25);opacity:0;}
+  opacity:1;
 }
 </style>
 </head>
@@ -81,6 +92,18 @@ button:hover{
 <script>
 let textSpeed = 40;
 
+/* Create stars in background */
+for(let i=0;i<120;i++){
+  let star=document.createElement("div");
+  star.className="star";
+  star.style.left=Math.random()*100+"vw";
+  star.style.top=Math.random()*100+"vh";
+  star.style.width=star.style.height=(Math.random()*2+1)+"px";
+  star.style.animationDuration=(2+Math.random()*3)+"s";
+  document.body.appendChild(star);
+}
+
+/* Typing effect */
 function typeEffect(element, text, i = 0){
   if(i < text.length){
     element.innerHTML += text.charAt(i);
@@ -88,9 +111,10 @@ function typeEffect(element, text, i = 0){
   }
 }
 
+/* Start surprise */
 function start(){
   document.getElementById("bgmusic").play();
-  document.body.innerHTML = `
+  document.body.innerHTML=`
     <div class="container">
       <h1 class="glow" id="typing"></h1>
       <button onclick="page2()">Next 💞</button>
@@ -98,6 +122,7 @@ function start(){
   typeEffect(document.getElementById("typing"), "Happy Birthday My Beautiful Sannpp 🎂❤️");
 }
 
+/* Romantic pages */
 function page2(){
   document.body.innerHTML=`
     <div class="container">
@@ -125,6 +150,7 @@ function page4(){
     </div>`;
 }
 
+/* Final cinematic screen */
 function final(){
   document.body.innerHTML=`
     <div class="container">
@@ -138,8 +164,9 @@ function final(){
   createFireworks();
 }
 
+/* Floating hearts */
 function createHearts(){
-  for(let i=0;i<30;i++){
+  for(let i=0;i<35;i++){
     let heart=document.createElement("div");
     heart.className="heart";
     heart.innerHTML="❤️";
@@ -149,16 +176,30 @@ function createHearts(){
   }
 }
 
+/* Fireworks with colored sparks */
 function createFireworks(){
-  for(let i=0;i<25;i++){
-    let fire=document.createElement("div");
-    fire.className="firework";
-    fire.style.left=Math.random()*100+"vw";
-    fire.style.top=Math.random()*100+"vh";
-    document.body.appendChild(fire);
+  let colors=["#ff4e8a","#ffdc73","#9affff","#ff7b00","#ffffff"];
+  for(let i=0;i<30;i++){
+    let spark=document.createElement("div");
+    spark.className="spark";
+    spark.style.background=colors[Math.floor(Math.random()*colors.length)];
+    spark.style.left=Math.random()*100+"vw";
+    spark.style.top=Math.random()*100+"vh";
+    document.body.appendChild(spark);
+
+    /* Animate spark movement */
+    let angle=Math.random()*2*Math.PI;
+    let distance=50+Math.random()*100;
+    let x=0, y=0;
+    let id=setInterval(()=>{
+      x+=Math.cos(angle)*2;
+      y+=Math.sin(angle)*2;
+      spark.style.transform=`translate(${x}px, ${y}px) scale(${1-(Math.abs(x)+Math.abs(y))/distance})`;
+      spark.style.opacity=1-(Math.abs(x)+Math.abs(y))/distance;
+      if(Math.abs(x)+Math.abs(y)>distance) {spark.remove(); clearInterval(id);}
+    },16);
   }
 }
 </script>
-
 </body>
 </html>
