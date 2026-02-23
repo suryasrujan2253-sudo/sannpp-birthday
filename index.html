@@ -1,33 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Happy Birthday Sannpp ❤️</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Sannpp ❤️</title>
 <style>
-body{
+body {
   margin:0;
-  background: linear-gradient(135deg, #ffe6f0 0%, #ffd9e8 50%, #ffcce0 100%);
+  font-family: Arial, sans-serif;
   overflow:hidden;
-  color:#4d0033;
-  font-family:Arial, sans-serif;
+  background: linear-gradient(135deg, #ffe6f0 0%, #ffd9e8 50%, #ffcce0 100%);
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
   text-align:center;
+  color:#4d0033;
 }
-.container{
+.container {
+  position: relative;
   z-index:2;
   padding:20px;
   max-width:90%;
 }
-.glow{
+.message {
   font-size:28px;
   font-weight:bold;
-  text-shadow:0 0 5px #ff99cc,0 0 10px #ff6699;
+  text-shadow: 0 0 5px #ff99cc,0 0 10px #ff6699;
+  opacity:0;
+  transition: opacity 1s;
 }
 /* Hearts */
-.heart, .bgheart{
+.heart, .bgheart {
   position:absolute;
   color:#ff6699;
   font-size:20px;
@@ -39,7 +43,7 @@ body{
   100%{transform:translateY(-10vh) scale(1); opacity:0;}
 }
 /* Fireworks sparks */
-.spark{
+.spark {
   position:absolute;
   width:4px;
   height:4px;
@@ -52,19 +56,19 @@ body{
 <audio id="bgmusic" src="love.mp3" loop></audio>
 
 <div class="container" id="container">
-<h1 class="glow">Happy Birthday Sannpp 🎂❤️</h1>
-<h2 class="glow">Tap anywhere to start 💖</h2>
+  <div class="message" id="message">Tap anywhere to start 💖</div>
 </div>
 
 <script>
 let currentSlide = -1;
+let typing = false;
 
-const messages=[
+const messages = [
   "Happy Birthday My Beautiful Sannpp 🎂❤️",
   "You make me smile even on my worst days 😊\nYou are my peace, my happiness, my everything 💕",
-  "Every moment with you feels magical ✨",
+  "Every moment with you feels magical ✨\nBeing your first love is the greatest gift of my life 💖",
   "I promise to protect you, support you, and love you always 🤍\nNo matter what life brings, I am yours ♾️",
-  "Happy Birthday Sannpp 🎂❤️\nI Love You So Much 💖\nYou make my life beautiful every single day 🌸\nWill you stay with me forever? 💍\nForever Yours,\nMungeesa"
+  "Happy Birthday Sannpp 🎂❤️\nI Love You So Much 💖\nYou make my life beautiful every single day 🌸\nForever Yours,\nMungeesa"
 ];
 
 /* Background floating hearts */
@@ -73,36 +77,24 @@ function createBgHearts(){
     let heart=document.createElement("div");
     heart.className="bgheart";
     heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(10+Math.random()*15)+"px";
-    heart.style.animationDuration=(6+Math.random()*6)+"s";
-    heart.style.opacity=0.3+Math.random()*0.4;
+    heart.style.left=Math.random()*100 + "vw";
+    heart.style.fontSize = (10 + Math.random()*15) + "px";
+    heart.style.animationDuration = (6 + Math.random()*6) + "s";
+    heart.style.opacity = 0.3 + Math.random()*0.4;
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),12000);
   },500);
 }
 
-/* Floating hearts */
-function createHearts(){
-  for(let i=0;i<35;i++){
-    let heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(4+Math.random()*4)+"s";
-    document.body.appendChild(heart);
-  }
-}
-
 /* Fireworks */
 function createFireworks(){
-  let colors=["#ff4e8a","#ff99cc","#ffe6f0","#ffb3d9","#ffffff"];
+  const colors=["#ff4e8a","#ff99cc","#ffe6f0","#ffb3d9","#ffffff"];
   for(let i=0;i<30;i++){
-    let spark=document.createElement("div");
+    let spark = document.createElement("div");
     spark.className="spark";
-    spark.style.background=colors[Math.floor(Math.random()*colors.length)];
-    spark.style.left=Math.random()*100+"vw";
-    spark.style.top=Math.random()*100+"vh";
+    spark.style.background = colors[Math.floor(Math.random()*colors.length)];
+    spark.style.left = Math.random()*100 + "vw";
+    spark.style.top = Math.random()*100 + "vh";
     document.body.appendChild(spark);
 
     let angle=Math.random()*2*Math.PI;
@@ -111,30 +103,35 @@ function createFireworks(){
     let id=setInterval(()=>{
       x+=Math.cos(angle)*2;
       y+=Math.sin(angle)*2;
-      spark.style.transform=`translate(${x}px,${y}px) scale(${1-(Math.abs(x)+Math.abs(y))/distance})`;
-      spark.style.opacity=1-(Math.abs(x)+Math.abs(y))/distance;
+      spark.style.transform = `translate(${x}px,${y}px) scale(${1-(Math.abs(x)+Math.abs(y))/distance})`;
+      spark.style.opacity = 1-(Math.abs(x)+Math.abs(y))/distance;
       if(Math.abs(x)+Math.abs(y)>distance){spark.remove(); clearInterval(id);}
     },16);
   }
 }
 
 /* Typing effect */
-function typeEffect(element, text, i=0){
-  element.innerHTML = "";
+function typeEffect(el, text, callback){
+  typing = true;
+  el.innerHTML = "";
   let lines = text.split("\n");
-  let lineIndex = 0;
+  let lineIndex=0;
 
   function typeLine(){
-    if(lineIndex >= lines.length) return;
-    let line = lines[lineIndex];
-    let charIndex = 0;
+    if(lineIndex>=lines.length){
+      typing=false;
+      if(callback) callback();
+      return;
+    }
+    let line=lines[lineIndex];
+    let charIndex=0;
     function typeChar(){
-      if(charIndex < line.length){
-        element.innerHTML += line.charAt(charIndex);
+      if(charIndex<line.length){
+        el.innerHTML += line.charAt(charIndex);
         charIndex++;
-        setTimeout(typeChar, 40);
+        setTimeout(typeChar,40);
       } else {
-        element.innerHTML += "<br>";
+        el.innerHTML += "<br>";
         lineIndex++;
         typeLine();
       }
@@ -144,26 +141,24 @@ function typeEffect(element, text, i=0){
   typeLine();
 }
 
-/* Show next slide */
+/* Next slide */
 function nextSlide(){
+  if(typing) return;
   currentSlide++;
-  const container = document.getElementById("container");
-  if(currentSlide === 0){
-    document.getElementById("bgmusic").play();
+  const el=document.getElementById("message");
+  if(currentSlide===0){
+    document.getElementById("bgmusic").play().catch(()=>{});
     createBgHearts();
   }
-  if(currentSlide < messages.length - 1){
-    typeEffect(container, messages[currentSlide]);
+  if(currentSlide<messages.length-1){
+    typeEffect(el,messages[currentSlide]);
   } else {
-    typeEffect(container, messages[currentSlide]);
-    createHearts();
+    typeEffect(el,messages[currentSlide]);
     createFireworks();
   }
 }
 
-// Advance slides on tap anywhere
-document.body.addEventListener("click", function(){
-  if(currentSlide === -1) currentSlide = 0;
+document.body.addEventListener("click",()=>{
   nextSlide();
 });
 </script>
