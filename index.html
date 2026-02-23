@@ -6,9 +6,8 @@
 <style>
 body{
 margin:0;
-padding:0;
-font-family: 'Arial', sans-serif;
-background: linear-gradient(135deg,#ff4e8a,#ff9a9e);
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#ff4e8a,#ff9a9e);
 display:flex;
 justify-content:center;
 align-items:center;
@@ -18,10 +17,13 @@ text-align:center;
 overflow:hidden;
 }
 .container{
-animation: fadeIn 1.5s ease-in-out;
+animation:fade 1.2s ease-in-out;
+padding:20px;
+position:relative;
+z-index:2;
 }
 button{
-margin-top:20px;
+margin:10px;
 padding:12px 25px;
 border:none;
 border-radius:25px;
@@ -34,9 +36,42 @@ box-shadow:0 4px 15px rgba(0,0,0,0.3);
 button:hover{
 transform:scale(1.05);
 }
-@keyframes fadeIn{
+@keyframes fade{
 from{opacity:0;}
 to{opacity:1;}
+}
+
+/* Floating hearts */
+.heart{
+position:absolute;
+color:white;
+font-size:20px;
+animation:float 5s linear infinite;
+}
+@keyframes float{
+0%{transform:translateY(100vh);opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+/* Firecracker effect */
+.firework{
+position:absolute;
+width:5px;
+height:5px;
+background:yellow;
+border-radius:50%;
+animation:explode 1s ease-out forwards;
+}
+@keyframes explode{
+0%{transform:scale(1);opacity:1;}
+100%{transform:scale(15);opacity:0;}
+}
+
+/* Glow text */
+.glow{
+font-size:28px;
+font-weight:bold;
+text-shadow:0 0 10px white,0 0 20px pink,0 0 30px red;
 }
 </style>
 </head>
@@ -44,4 +79,89 @@ to{opacity:1;}
 
 <div class="container">
 <h2>Hi My Sannpp ❤️</h2>
-<p
+<p>I made something special for you 🎁</p>
+<button onclick="start()">Start Surprise 💖</button>
+<br>
+<button onclick="music()">Play Our Song 🎧</button>
+</div>
+
+<script>
+
+function music(){
+window.open("https://www.youtube.com/watch?v=nyuo9-OjNNg","_blank");
+}
+
+function start(){
+document.body.innerHTML=`
+<div class="container">
+<h1>Happy Birthday My Love 🎂❤️</h1>
+<p>You are my first love and my greatest blessing 💕</p>
+<button onclick="page2()">Next 💞</button>
+</div>`;
+}
+
+function page2(){
+document.body.innerHTML=`
+<div class="container">
+<h2>You make me smile even on my worst days 😊</h2>
+<p>You make my life brighter 🌸</p>
+<button onclick="page3()">Next 💗</button>
+</div>`;
+}
+
+function page3(){
+document.body.innerHTML=`
+<div class="container">
+<h2>Every moment with you feels magical ✨</h2>
+<p>I never knew love could feel this beautiful 💖</p>
+<button onclick="page4()">Next 💓</button>
+</div>`;
+}
+
+function page4(){
+document.body.innerHTML=`
+<div class="container">
+<h2>I promise to stand by you always 🤍</h2>
+<p>Through happiness and struggles, forever ♾️</p>
+<button onclick="final()">One Last Thing 💍</button>
+</div>`;
+}
+
+function final(){
+document.body.innerHTML=`
+<div class="container">
+<h1 class="glow">I Love You Sannpp ❤️</h1>
+<p>Will you stay with me forever? 💖</p>
+<p style="margin-top:20px;">Forever Yours,<br><b>Mungeesa</b></p>
+</div>`;
+createHearts();
+createFireworks();
+}
+
+/* Floating hearts generator */
+function createHearts(){
+for(let i=0;i<20;i++){
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(3+Math.random()*3)+"s";
+document.body.appendChild(heart);
+}
+}
+
+/* Firecracker generator */
+function createFireworks(){
+for(let i=0;i<15;i++){
+let fire=document.createElement("div");
+fire.className="firework";
+fire.style.left=Math.random()*100+"vw";
+fire.style.top=Math.random()*100+"vh";
+document.body.appendChild(fire);
+}
+}
+
+</script>
+
+</body>
+</html>
