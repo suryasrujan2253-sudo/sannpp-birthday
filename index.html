@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>For My Sannpp ❤️</title>
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
+text-align:center;
+}
+button{
+margin-top:15px;
+padding:12px 25px;
+border-radius:25px;
+border:none;
+background:white;
+color:#ff4d6d;
+font-size:16px;
+cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h2>Hi My Sannpp ❤️</h2>
+<button onclick="start()">Start Surprise 🎧</button>
+
+<script>
+function start(){
+window.open("https://www.youtube.com/watch?v=nyuo9-OjNNg","_blank");
+
+document.body.innerHTML=`
+<h2>Happy Birthday My Sannpp 🎂❤️</h2>
+<p>You are my first love and my forever 💕</p>
+<button onclick="proposal()">Next 💖</button>
+`;
+}
+
+function proposal(){
+document.body.innerHTML=`
+<h2>Will you stay with me forever? 💍❤️</h2>
+<button onclick="yes()">Yes 💖</button>
+`;
+}
+
+function yes(){
+document.body.innerHTML="<h1>I Love You Sannpp ❤️<br>Forever Yours – Surya</h1>";
+}
+</script>
+
+</body>
+</html>
