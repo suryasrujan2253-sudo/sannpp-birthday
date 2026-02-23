@@ -53,11 +53,19 @@ body{
 
 <div class="container" id="container">
 <h1 class="glow">Happy Birthday Sannpp 🎂❤️</h1>
-<button onclick="start()">Start Surprise 💖</button>
+<h2 class="glow">Tap anywhere to start 💖</h2>
 </div>
 
 <script>
-let textSpeed = 40;
+let currentSlide = -1;
+
+const messages=[
+  "Happy Birthday My Beautiful Sannpp 🎂❤️",
+  "You make me smile even on my worst days 😊\nYou are my peace, my happiness, my everything 💕",
+  "Every moment with you feels magical ✨\nBeing your first love is the greatest gift of my life 💖",
+  "I promise to protect you, support you, and love you always 🤍\nNo matter what life brings, I am yours ♾️",
+  "Happy Birthday Sannpp 🎂❤️\nI Love You So Much 💖\nYou make my life beautiful every single day 🌸\nWill you stay with me forever? 💍\nForever Yours,\nMungeesa"
+];
 
 /* Background floating hearts */
 function createBgHearts(){
@@ -136,54 +144,28 @@ function typeEffect(element, text, i=0){
   typeLine();
 }
 
-/* Start Surprise */
-function start(){
-  document.getElementById("bgmusic").play();
-  createBgHearts();
-  let container=document.getElementById("container");
-  container.innerHTML=`<h1 class="glow" id="typing"></h1>`;
-  typeEffect(document.getElementById("typing"), "Happy Birthday My Beautiful Sannpp 🎂❤️");
-  // show next messages with enough delay so final slide stays visible
-  setTimeout(page2, 4000);
+/* Show next slide */
+function nextSlide(){
+  currentSlide++;
+  const container = document.getElementById("container");
+  if(currentSlide === 0){
+    document.getElementById("bgmusic").play();
+    createBgHearts();
+  }
+  if(currentSlide < messages.length - 1){
+    typeEffect(container, messages[currentSlide]);
+  } else {
+    typeEffect(container, messages[currentSlide]);
+    createHearts();
+    createFireworks();
+  }
 }
 
-function page2(){
-  let container=document.getElementById("container");
-  container.innerHTML=`
-    <h2>You make me smile even on my worst days 😊</h2>
-    <p>You are my peace, my happiness, my everything 💕</p>`;
-  setTimeout(page3, 4000);
-}
-
-function page3(){
-  let container=document.getElementById("container");
-  container.innerHTML=`
-    <h2>Every moment with you feels magical ✨</h2>
-    <p>Being your first love is the greatest gift of my life 💖</p>`;
-  setTimeout(page4, 4000);
-}
-
-function page4(){
-  let container=document.getElementById("container");
-  container.innerHTML=`
-    <h2>I promise to protect you, support you, and love you always 🤍</h2>
-    <p>No matter what life brings, I am yours ♾️</p>`;
-  setTimeout(final, 4000);
-}
-
-/* Final cinematic screen */
-function final(){
-  let container=document.getElementById("container");
-  container.innerHTML=`
-    <h1 class="glow">Happy Birthday Sannpp 🎂❤️</h1>
-    <h2 class="glow">I Love You So Much 💖</h2>
-    <p>You make my life beautiful every single day 🌸</p>
-    <p>Will you stay with me forever? 💍</p>
-    <p style="margin-top:20px;font-size:18px;">Forever Yours,<br><b>Mungeesa</b></p>`;
-  createHearts();
-  createFireworks();
-  // Keep final slide visible indefinitely
-}
+// Advance slides on tap anywhere
+document.body.addEventListener("click", function(){
+  if(currentSlide === -1) currentSlide = 0;
+  nextSlide();
+});
 </script>
 </body>
 </html>
