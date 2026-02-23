@@ -15,6 +15,7 @@ body{
   align-items:center;
   height:100vh;
   text-align:center;
+  cursor:pointer;
 }
 
 /* Stars */
@@ -34,21 +35,6 @@ body{
 .container{
   z-index:2;
   padding:20px;
-}
-
-button{
-  margin:10px;
-  padding:12px 25px;
-  border:none;
-  border-radius:25px;
-  background:#ff4e8a;
-  color:white;
-  font-size:16px;
-  cursor:pointer;
-  box-shadow:0 0 15px #ff4e8a;
-}
-button:hover{
-  transform:scale(1.05);
 }
 
 .glow{
@@ -79,18 +65,17 @@ button:hover{
 }
 </style>
 </head>
-<body>
+<body id="body">
 
 <audio id="bgmusic" src="love.mp3" loop></audio>
 
-<div class="container">
-<h2>Hi My Sannpp ❤️</h2>
-<p>Tonight is special ✨</p>
-<button onclick="start()">Start Surprise 💖</button>
+<div class="container" id="container">
+<h1 class="glow">Tap Anywhere To Start 💖</h1>
 </div>
 
 <script>
 let textSpeed = 40;
+let started = false;
 
 /* Create stars in background */
 for(let i=0;i<120;i++){
@@ -111,55 +96,57 @@ function typeEffect(element, text, i = 0){
   }
 }
 
-/* Start surprise */
-function start(){
-  document.getElementById("bgmusic").play();
-  document.body.innerHTML=`
-    <div class="container">
-      <h1 class="glow" id="typing"></h1>
-      <button onclick="page2()">Next 💞</button>
-    </div>`;
-  typeEffect(document.getElementById("typing"), "Happy Birthday My Beautiful Sannpp 🎂❤️");
-}
+/* Start the full surprise on first tap */
+document.body.addEventListener("click", function(){
+  if(started) return;
+  started = true;
 
-/* Romantic pages */
+  // play music
+  document.getElementById("bgmusic").play();
+
+  // replace container
+  document.getElementById("container").innerHTML=`
+    <h1 class="glow" id="typing"></h1>
+  `;
+  typeEffect(document.getElementById("typing"), "Happy Birthday My Beautiful Sannpp 🎂❤️");
+
+  // proceed through pages automatically
+  setTimeout(page2, 4000);
+});
+
 function page2(){
-  document.body.innerHTML=`
-    <div class="container">
-      <h2>You make me smile even on my worst days 😊</h2>
-      <p>You are my peace, my happiness, my everything 💕</p>
-      <button onclick="page3()">Next 💗</button>
-    </div>`;
+  document.getElementById("container").innerHTML=`
+    <h2>You make me smile even on my worst days 😊</h2>
+    <p>You are my peace, my happiness, my everything 💕</p>
+  `;
+  setTimeout(page3, 4000);
 }
 
 function page3(){
-  document.body.innerHTML=`
-    <div class="container">
-      <h2>Every moment with you feels magical ✨</h2>
-      <p>Being your first love is the greatest gift of my life 💖</p>
-      <button onclick="page4()">Next 💓</button>
-    </div>`;
+  document.getElementById("container").innerHTML=`
+    <h2>Every moment with you feels magical ✨</h2>
+    <p>Being your first love is the greatest gift of my life 💖</p>
+  `;
+  setTimeout(page4, 4000);
 }
 
 function page4(){
-  document.body.innerHTML=`
-    <div class="container">
-      <h2>I promise to protect you, support you, and love you always 🤍</h2>
-      <p>No matter what life brings, I am yours ♾️</p>
-      <button onclick="final()">One Last Thing 💍</button>
-    </div>`;
+  document.getElementById("container").innerHTML=`
+    <h2>I promise to protect you, support you, and love you always 🤍</h2>
+    <p>No matter what life brings, I am yours ♾️</p>
+  `;
+  setTimeout(final, 4000);
 }
 
 /* Final cinematic screen */
 function final(){
-  document.body.innerHTML=`
-    <div class="container">
-      <h1 class="glow">Happy Birthday Sannpp 🎂❤️</h1>
-      <h2 class="glow">I Love You So Much 💖</h2>
-      <p>You make my life beautiful every single day 🌸</p>
-      <p>Will you stay with me forever? 💍</p>
-      <p style="margin-top:20px;font-size:18px;">Forever Yours,<br><b>Mungeesa</b></p>
-    </div>`;
+  document.getElementById("container").innerHTML=`
+    <h1 class="glow">Happy Birthday Sannpp 🎂❤️</h1>
+    <h2 class="glow">I Love You So Much 💖</h2>
+    <p>You make my life beautiful every single day 🌸</p>
+    <p>Will you stay with me forever? 💍</p>
+    <p style="margin-top:20px;font-size:18px;">Forever Yours,<br><b>Mungeesa</b></p>
+  `;
   createHearts();
   createFireworks();
 }
@@ -187,7 +174,6 @@ function createFireworks(){
     spark.style.top=Math.random()*100+"vh";
     document.body.appendChild(spark);
 
-    /* Animate spark movement */
     let angle=Math.random()*2*Math.PI;
     let distance=50+Math.random()*100;
     let x=0, y=0;
@@ -201,5 +187,6 @@ function createFireworks(){
   }
 }
 </script>
+
 </body>
 </html>
